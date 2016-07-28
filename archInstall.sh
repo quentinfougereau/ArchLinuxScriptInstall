@@ -11,9 +11,9 @@ function partition_disk {
   ###mklabel allow to choose the type of the disk
   parted --script $part mklabel gpt \
   mkpart ESP fat32 1MiB 513MiB \
-  mkpart primary ext4 $beg $end \
-  mkpart primary linux-swap $beg2 $end2 \
-  mkpart primary ext4 $beg3 $end3
+  mkpart primary ext4 $beg"GiB" $end"GiB" \
+  mkpart primary linux-swap $beg2"GiB" $end2"GiB" \
+  mkpart primary ext4 $beg3"GiB" $end3"GiB"
   quit
 
   echo "Set up and activate swap : "
