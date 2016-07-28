@@ -1,18 +1,21 @@
 #!/bin/bash
 
 function partition_disk {
+  read -p "Root partition from (GiB) : " beg
+  read -p "to (Gib) : " end
+  read -p "Swap partition from (GiB) : " beg2
+  read -p "to (GiB) : " end2
+  read -p "Home partition from (GiB) : " beg3
+  read -p "to (GiB) or type 100% : " end3
+
   ###mklabel allow to choose the type of the disk
   parted --script $part mklabel gpt \
   mkpart ESP fat32 1MiB 513MiB \
-  read -p "Root partition from (GiB) : " beg
-  read -p "to (Gib) : " end
   mkpart primary ext4 $beg $end \
-  read -p "Swap partition from (GiB) : " beg
-  read -p "to (GiB) : " end
-  mkpart primary linux-swap beg end \
-  read -p "Home partition from (GiB) : " beg
-  read -p "to (GiB) or type 100% : " end
-  mkpart primary ext4 beg end
+  mkpart primary linux-swap $beg2 $end2 \
+  mkpart primary ext4 $beg3 $end3
+  quit
+  
   echo "Set up and activate swap : "
   mkswap $part"3"
   swapon $part"3"
