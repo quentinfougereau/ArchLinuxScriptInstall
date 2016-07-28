@@ -15,7 +15,7 @@ function partition_disk {
   mkpart primary linux-swap $beg2 $end2 \
   mkpart primary ext4 $beg3 $end3
   quit
-  
+
   echo "Set up and activate swap : "
   mkswap $part"3"
   swapon $part"3"
@@ -68,11 +68,11 @@ function configure_system {
   ### tzselect
   ### mkinitcpio
 
-  ### systemd boot
+  ### Install systemd-boot which executes configured EFI images
   bootctl --path=esp install
   ###Basic configuration
   ##editor : enable the kernel parameters editor or not. 1 (default) to enable and 0 to disable
-  echo "default  arch\ntimeout  4 \neditor   0" > /home/quentin/Documents/test.txt
+  echo "default  arch\ntimeout  4 \neditor   0" > esp/loader/loader.conf
   archconf="title     Arch Linux\nlinux     /vmlinuz-linux\ninitrd    /initramfs-linux.img\noptions   root=${part}'2' rw"
   echo ${archconf} > /esp/loader/entries/arch.conf
 
@@ -105,7 +105,7 @@ function configure_system {
 
 parted -l #List partition to help user to choose
 
-#l'option -p associe un message à la commande 'read'
+#-p associate message to 'read' command
 read -p "Please, write a disk where you want to install ArchLinux (ie : /dev/sda) : " part
 
 read -p "Are you sure ? All data will be removed (y/n)" res
